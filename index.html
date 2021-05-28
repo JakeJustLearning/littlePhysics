@@ -15,50 +15,52 @@
 </head>
 
 <body>
-    <div id='console'>
-        <div id='game-screen-container'>
-            <canvas id='game-screen'></canvas>
-        </div>
-        <div id='console-buttons'>
-            <div id='directional-buttons-zone'>
-                <div class="ud-button-zone">
-                    <span class="direction-button-spacer">
+    <container id='play-space'>
+        <div id='console'>
+            <div id='game-screen-container'>
+                <canvas id='game-screen'></canvas>
+            </div>
+            <div id='console-buttons'>
+                <div id='directional-buttons-zone'>
+                    <div class="ud-button-zone">
+                        <span class="direction-button-spacer">
                         </span>
-                    <button id='up-button' class="material-icons-round button direction-button"><span class="material-icons-round direction-button">
+                        <button id='up-button' class="material-icons-round button direction-button"><span class="material-icons-round direction-button">
                             keyboard_arrow_up
                         </button>
-                    <span class="direction-button-spacer"></span>
-                </div>
-                <div id='left-right-button-zone'>
-                    <button id='left-button' class="material-icons-round button direction-button"><span class="material-icons-round direction-button">
+                        <span class="direction-button-spacer"></span>
+                    </div>
+                    <div id='left-right-button-zone'>
+                        <button id='left-button' class="material-icons-round button direction-button"><span class="material-icons-round direction-button">
                         keyboard_arrow_left
                     </button>
-                    <div id='lr-button-spacer'></div>
-                    <button id='right-button' class="material-icons-round button direction-button"><span class="material-icons-round direction-button">
+                        <div id='lr-button-spacer'></div>
+                        <button id='right-button' class="material-icons-round button direction-button"><span class="material-icons-round direction-button">
                         keyboard_arrow_right
                     </button>
-                </div>
-                <div class='ud-button-zone'>
-                    <span class="direction-button-spacer"></span>
-                    <button id='down-button' class="material-icons-round button direction-button"><span class="material-icons-round direction-button">
+                    </div>
+                    <div class='ud-button-zone'>
+                        <span class="direction-button-spacer"></span>
+                        <button id='down-button' class="material-icons-round button direction-button"><span class="material-icons-round direction-button">
                         keyboard_arrow_down
                     </button>
-                    <span class="direction-button-spacer"></span>
+                        <span class="direction-button-spacer"></span>
+                    </div>
+                </div>
+                <span id="button-zone-spacer">
+            </span>
+                <div id='action-button-zone'>
+                    <button id='a-button' class="material-icons-round button action-button">stream</button>
+                    <button id='b-button' class="material-icons-round button action-button">waves</button>
                 </div>
             </div>
-            <span id="button-zone-spacer">
-            </span>
-            <div id='action-button-zone'>
-                <button id='a-button' class="material-icons-round button action-button">stream</button>
-                <button id='b-button' class="material-icons-round button action-button">waves</button>
-            </div>
         </div>
-    </div>
-    <div id="power-switch-zone">
-        <div id='power-switch'></div>
-        <div id='power-light' data-lightOn='false'></div>
-        <span id='power-text' class='material-icons-round'>power_settings_new</span>
-    </div>
+        <div id="power-switch-zone">
+            <div id='power-switch'></div>
+            <div id='power-light' data-lightOn='false'></div>
+            <span id='power-text' class='material-icons-round'>power_settings_new</span>
+        </div>
+    </container>
 </body>
 
 </html>
