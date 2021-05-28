@@ -1,4 +1,4 @@
-window.maxFPS = 1
+window.maxFPS = 30
 window.lastFrameTimeMS = Date.now()
     // HARDWARE CLASSES
 
@@ -15,28 +15,12 @@ class Game {
     initGame() {
         this.createWorld()
         this.createPlayer()
-        this.loopDraw()
-
-        this.mainLoop()
-    }
-
-    mainLoop() {
-        while (this.gameOn == true) {
-            console.log('looping')
-            const timestamp = Date.now()
-
-            if (timestamp < window.lastFrameTimeMs + (1000 / window.maxFPS)) {
-                coninue;
-            }
-            this.loopUpdate()
-            this.loopDraw()
-            window.lastFrameTimeMS = timestamp
-        }
     }
 
     // LOGICING
 
     loopUpdate() {
+        // console.log('logicing')
         this.applyPlayerInput()
         this.physics.run(this.gameObjects.filter(gameObj => gameObj.controlling == true))
     }
@@ -57,7 +41,7 @@ class Game {
 
     // RENDERING
     loopDraw() {
-        console.log('drawing')
+        // console.log('drawing')
         scrn.clearRect(0, 0, canvas.width, canvas.height)
 
         this.gameObjects.forEach(gameObj => {
@@ -75,6 +59,7 @@ class Game {
         scrn.rect(gamObj.x, gamObj.y, gamObj.width, gamObj.height)
         scrn.stroke()
         scrn.fill()
+        scrn.closePath()
     }
     createWorld() {
         const ground = new Rectangle(0, 145, 0, 0, false, canvas.width, 10)
@@ -224,13 +209,18 @@ class Engine {
 
 
 // Global Functions
-
+window.mainLoop = function() {
+    game.loopUpdate()
+    game.loopDraw()
+    setTimeout(requestAnimationFrame(mainLoop), (1000 / maxFPS))
+}
 
 function gameOn() {
     console.log('new game')
     window.canvas = document.querySelector('#game-screen')
     window.scrn = canvas.getContext('2d')
     window.game = new Game
+        // mainLoop(game)
 }
 
 
