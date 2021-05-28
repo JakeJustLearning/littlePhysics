@@ -1,0 +1,124 @@
+    /* HARDWARE */
+    
+    #console {
+        display: flex;
+        flex-direction: column;
+        background-color: darkorchid;
+        height: 500px;
+        width: 350px;
+        align-content: center;
+        padding: 5px;
+    }
+    
+    #power-switch-zone {
+        height: 45px;
+        width: 12px;
+        background-color: darkslategray;
+        position: absolute;
+        left: 356px;
+        bottom: 600px
+    }
+    
+    #power-switch {
+        transition: all 0.5s;
+        height: 23px;
+        width: 10px;
+        background-color: rgb(25, 151, 151);
+        position: absolute;
+        bottom: 0%;
+        margin-left: 3px;
+        margin-bottom: 3px;
+    }
+    
+    #power-text {
+        font-size: 10px;
+        position: absolute;
+        right: 16px;
+    }
+    
+    #power-light {
+        position: absolute;
+        border-radius: 100%;
+        height: 10px;
+        width: 10px;
+        background-color: rgb(56, 56, 56);
+        right: 16px;
+        top: 10px;
+    }
+    
+    #power-light[data-lightOn=true] {
+        background-color: lime;
+        box-shadow: 0px 0px 5px 2px rgba(136, 250, 136, 0.425);
+    }
+    
+    #game-screen-container {
+        display: flex;
+        /* overflow: hidden; */
+        position: relative;
+        margin: 10px;
+        border: 4px rgb(0, 41, 0) solid;
+        align-self: center;
+    }
+    
+    #game-screen {
+        background-color: darkgreen;
+        height: 320px;
+        width: 290px;
+    }
+    
+    #console-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    
+    #directional-button-zone {
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .ud-button-zone {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+    }
+    
+    #lr-button-spacer {
+        width: 40px;
+    }
+    
+    #action-button-zone {
+        width: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        /* flex-shrink: 0; */
+    }
+    
+    #left-right-button-zone {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        /* justify-content: center; */
+        /* align-self: center; */
+    }
+    
+    button {
+        background-color: slategray;
+        height: 40px;
+        width: 40px;
+        border-radius: 100%;
+    }
+    /* Software */
+    
+    #player-block {
+        background-color: springgreen;
+        height: 55px;
+        width: 32px;
+        position: absolute;
+        bottom: 0px;
+        left: 20%;
+    }
