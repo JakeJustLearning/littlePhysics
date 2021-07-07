@@ -1,4 +1,4 @@
-window.maxFPS = 30
+window.maxFPS = 1
 window.lastFrameTimeMS = Date.now()
     // HARDWARE CLASSES
 
@@ -8,8 +8,10 @@ class Game {
         this.controller = new Controller
         this.physics = new Engine
         this.gameOn = true
-
+        this.controller.name = 'game con'
         this.initGame()
+        window.addEventListener('keydown', this.controller.keyDown)
+        window.addEventListener('keyup', this.controller.keyUp)
     }
 
     initGame() {
@@ -27,23 +29,22 @@ class Game {
 
 
     applyPlayerInput() {
-        const inputs = this.controller.getInputs()
+        
         this.gameObjects.filter(gameObj => gameObj.controlling == true)
             .forEach(gameObj => {
-                gameObj.velX -= inputs[0] ? 1 : 0
-                gameObj.velY += inputs[0] ? 1 : 0
-                gameObj.VelX += inputs[0] ? 1 : 0
-                gameObj.VelY -= inputs[0] ? 1 : 0
+                console.log(`applying ${this.controller.getInputs}`)
+                gameObj.velX -= this.controller.getInputs()[0] 
+                gameObj.velY += this.controller.getInputs()[2] 
+                gameObj.velX += this.controller.getInputs()[1] 
+                gameObj.velY -= this.controller.getInputs()[3]
+                console.log(gameObj)
             })
-
-
     }
 
     // RENDERING
     loopDraw() {
         // console.log('drawing')
         scrn.clearRect(0, 0, canvas.width, canvas.height)
-
         this.gameObjects.forEach(gameObj => {
             this.drawObject(gameObj)
         })
@@ -73,63 +74,74 @@ class Game {
 // CONTROLS
 class Controller {
     constructor() {
-        this.left = false
-        this.right = false
-        this.down = false
-        this.up = false
-        window.addEventListener('keydown', this.keyDown)
-        window.addEventListener('keyup', this.keyUp)
+        this.left = 0
+        this.right = 0
+        this.down = 0
+        this.up = 0
+        this.keyDown = this.keyDown.bind(this)
+        this.keyup = this.keyUp.bind(this)
+        // this.getInputs = this.getInput
     }
-
     keyDown(event) {
         // if (document.getElementById('play-space').getAttribute('focus-within')) {
-        console.log(event.code)
+
         switch (event.keyCode) {
             case 37:
-                this.left = true;
+
+                this.left = 1;
+
+                event.preventDefault()
                 break
             case 39:
-                this.right = true
+                this.right = 1
+
+                event.preventDefault()
                 break
             case 38:
-                this.up = true
+                this.up = 1
+
+                event.preventDefault()
                 break
             case 40:
-                this.down = true
+                this.down = 1
+
+                event.preventDefault()
                 break
             default:
                 break
         }
-        event.preventDefault()
             // }
     }
     keyUp(event) {
+         console.log(`key up ${event.keyCode}`)
         // if (document.getElementById('play-space').getAttribute('focus-within')) {
-        console.log(event.code)
         switch (event.keyCode) {
             case 37:
-                this.left = false
+                this.left = 0
+                event.preventDefault()
+                console.log(this.left)
+
                 break
             case 39:
-                this.right = false
+                this.right = 0
+                event.preventDefault()
                 break
             case 38:
-                this.up = false
+                this.up = 0
+                event.preventDefault()
                 break
             case 40:
-                this.down = false
+                this.down = 0
+                event.preventDefault()
                 break
             default:
                 break
         }
-        event.preventDefault()
             // }
     }
-
     getInputs() {
         return [this.left, this.right, this.up, this.down]
     }
-
 }
 
 // SOFTWARE CLASSES
@@ -139,7 +151,7 @@ class GameObject {
         this.y = y
         this.velX = velX || 0
         this.velY = velY || 0
-        this.shap = ''
+        this.shape = ''
 
         this.isColliding = false
         this.hasGravity = gravity || true
@@ -168,24 +180,26 @@ class Engine {
     constructor() {
         this.maxVelX = 5
         this.maxVelY = 12
-        this.gravity = 1.5
+        this.gravity = 0.5
     }
     run(gameObjects) {
         gameObjects.forEach(gameObj => {
+            // console.log(this)
             this.yMovement(gameObj)
             this.xMovement(gameObj)
             this.friction(gameObj);
-            (gameObj.gravity) ? this.gravity(gameObj): console.log('nograv');
+            (gameObj.gravity) ? this.applyGravity(gameObj): console.log('nograv');
             if (gameObj.y + gameObj.height > 145) {
                 gameObj.y = 145 - gameObj.height
                 gameObj.VelY = 0
             }
         })
-
     }
 
     yMovement(gameObject) {
-        gameObject.y += gameObject.velY
+        console.log(gameObject)
+        // console.log('ymovement')
+        gameObject.y = gameObject.y + gameObject.velY
     }
 
     xMovement(gameObject) {
@@ -193,12 +207,13 @@ class Engine {
 
     }
     friction(gameObject) {
-        gameObject.velX *= 0.8
-        gameObject.velY *= 0.9
+        gameObject.velX *= 0.3
+        // gameObject.velY -= 1
     }
 
-    gravity(gameObject) {
-        gameObject.velY -= 1.5
+    applyGravity(gameObject) {
+        gameObject.velY -= this.gravity
+
     }
 
 }
@@ -210,9 +225,11 @@ class Engine {
 
 // Global Functions
 window.mainLoop = function() {
-    game.loopUpdate()
-    game.loopDraw()
-    setTimeout(requestAnimationFrame(mainLoop), (1000 / maxFPS))
+    if(game.gameOn == true) {
+        game.loopUpdate()
+        game.loopDraw()
+        setTimeout(requestAnimationFrame(mainLoop), (1000/maxFPS))
+    }
 }
 
 function gameOn() {
@@ -220,7 +237,7 @@ function gameOn() {
     window.canvas = document.querySelector('#game-screen')
     window.scrn = canvas.getContext('2d')
     window.game = new Game
-        // mainLoop(game)
+    mainLoop(game)
 }
 
 
@@ -271,7 +288,9 @@ $(document).ready(function() {
             game.gameOn = false
             document.querySelector('#power-switch').style.transform = 'translateY(0px)'
             $('#power-light').attr('data-lightOn', false)
+            mainLoop
             scrn.clearRect(0, 0, canvas.width, canvas.height)
+
         } else {
             console.log('power-is-off')
             document.querySelector('#power-switch').style.transform = 'translateY(-20px)'
