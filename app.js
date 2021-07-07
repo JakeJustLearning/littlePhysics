@@ -87,9 +87,7 @@ class Controller {
 
         switch (event.keyCode) {
             case 37:
-
                 this.left = 1;
-
                 event.preventDefault()
                 break
             case 39:
