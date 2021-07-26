@@ -61,6 +61,7 @@
     }
     
     #game-screen {
+        display: block;
         background-color: darkgreen;
         height: 320px;
         width: 290px;
@@ -114,11 +115,11 @@
     }
     /* Software */
     
-    #player-block {
+    /* #player-block {
         background-color: springgreen;
         height: 55px;
         width: 32px;
         position: absolute;
         bottom: 0px;
         left: 20%;
-    }
+    } */

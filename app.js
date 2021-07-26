@@ -24,9 +24,9 @@ class Game {
     loopUpdate() {
         // console.log('logicing')
         this.applyPlayerInput()
-        this.physics.run(this.gameObjects.filter(gameObj => gameObj.controlling == true))
+        // this.physics.run(this.gameObjects.filter(gameObj => gameObj.controlling == true))
+        this.physics.run(this.gameObjects)
     }
-
 
     applyPlayerInput() {
         
@@ -40,6 +40,19 @@ class Game {
                 console.log(gameObj)
             })
     }
+
+    fireBullet() {
+        let bullet = new Rectangle(this.gameObjects[1].x,this.gameObjects[1].y,0,-6,false,8,4)
+        bullet.deletable = true
+        bullet.hasGravity = false
+        this.gameObjects.push(bullet)
+    }
+
+    cleanObjects(){
+        this.gameObjects = this.gameObjects.filter(gameObj => !gameObj.deletable)
+
+    }
+
 
     // RENDERING
     loopDraw() {
@@ -63,11 +76,11 @@ class Game {
         scrn.closePath()
     }
     createWorld() {
-        const ground = new Rectangle(0, 145, 0, 0, false, canvas.width, 10)
+        const ground = new Rectangle(0, 150, 0, 0, false, canvas.width, 2)
         this.gameObjects.push(ground)
     }
     createPlayer() {
-        const player = new Player(100, 110, 0, 0, true, 25, 30)
+        const player = new Player(100, 130, 0, 0, true, 30, 15)
         this.gameObjects.push(player)
     }
 }
@@ -87,6 +100,9 @@ class Controller {
         // if (document.getElementById('play-space').getAttribute('focus-within')) {
 
         switch (event.keyCode) {
+            case 32:
+                game.fireBullet()
+                break
             case 37:
                 this.left = 1;
                 event.preventDefault()
@@ -166,6 +182,7 @@ class Rectangle extends GameObject {
         this.width = width
         this.height = height
         this.shape = 'rectangle'
+        this.deletable
     }
 }
 
@@ -189,35 +206,33 @@ class Engine {
             this.yMovement(gameObj)
             this.xMovement(gameObj)
             this.friction(gameObj);
-            (gameObj.hasGravity) ? this.applyGravity(gameObj): console.log('nograv');
-            if (gameObj.y + gameObj.height > 145) {
-                gameObj.y = 145 - gameObj.height
-                gameObj.VelY = 0
-            }
+            if (gameObj.hasGravity == true) this.applyGravity(gameObj);
+            this.checkBoundary(gameObj);
+            
+
         })
     }
 
     yMovement(gameObject) {
     
-        console.log(`yMovement on ${gameObject}`)
-        console.log(`Y: ${gameObject.y} = ${gameObject.y} + ${gameObject.velY}`)
+        // console.log(`yMovement on ${gameObject}`)
+        // console.log(`Y: ${gameObject.y} = ${gameObject.y} + ${gameObject.velY}`)
         // console.log('ymovement')
         gameObject.y += gameObject.velY
     }
 
     xMovement(gameObject) {
-        console.log(`xMovement on ${gameObject}`)
-        console.log(`X: ${gameObject.x} = ${gameObject.x} + ${gameObject.velX}`)
-        gameObject.x += gameObject.velX
+        // console.log(`xMovement on ${gameObject}`)
+        // console.log(`X: ${gameObject.x} = ${gameObject.x} + ${gameObject.velX}`)
+        gameObject.x += gameObject.velX*2
 
     }
     friction(gameObject) {
-        console.log(`friction on ${gameObject}`)
-        console.log(`before friction VelX = ${gameObject.velX} VelY = ${gameObject.velY} `)
+        // console.log(`friction on ${gameObject}`)
+        // console.log(`before friction VelX = ${gameObject.velX} VelY = ${gameObject.velY} `)
         gameObject.velX *= 0.8
-        gameObject.velY *= 0.8
         // gameObject.velY -= 1
-        console.log(`After apply friction VelX = ${gameObject.velX} VelY = ${gameObject.velY} `)
+        // console.log(`After apply friction VelX = ${gameObject.velX} VelY = ${gameObject.velY} `)
     }
 
     applyGravity(gameObject) {
@@ -225,6 +240,22 @@ class Engine {
 
     }
 
+    checkBoundary(gameObject) {
+        if ((gameObject.x + gameObject.width) >= 320) {
+            gameObject.x = (318 - gameObject.width)
+            gameObject.velX = 0
+        }
+        if (gameObject.x <= 0 ) {
+            gameObject.x = 1
+            gameObject.velX = 0
+        }
+        if (gameObject.y + gameObject.height >= 130) {
+            gameObject.y = 130 - gameObject.height
+            gameObject.velY = 0
+        }
+        
+    
+    }
 }
 
 
