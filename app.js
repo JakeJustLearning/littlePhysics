@@ -64,16 +64,21 @@ class Game {
 
     }
 
-    drawObject(gamObj) {
-        scrn.lineWidth = 4
-        scrn.strokeStyle = 'lime'
-        scrn.fillStyle = 'lime'
-        scrn.beginPath()
-        scrn.beginPath()
-        scrn.rect(gamObj.x, gamObj.y, gamObj.width, gamObj.height)
-        scrn.stroke()
-        scrn.fill()
-        scrn.closePath()
+    drawObject(gameObj) {
+        if(gameObj.sprite) {
+            scrn.drawImage(gameObj.sprite,gameObj.x, gameObj.y, gameObj.width, gameObj.height )
+        }
+        else {
+            scrn.lineWidth = 4
+            scrn.strokeStyle = 'lime'
+            scrn.fillStyle = 'lime'
+            scrn.beginPath()
+            scrn.beginPath()
+            scrn.rect(gameObj.x, gameObj.y, gameObj.width, gameObj.height)
+            scrn.stroke()
+            scrn.fill()
+            scrn.closePath()
+        }
     }
     createWorld() {
         const ground = new Rectangle(0, 150, 0, 0, false, canvas.width, 2)
@@ -81,6 +86,8 @@ class Game {
     }
     createPlayer() {
         const player = new Player(100, 130, 0, 0, true, 30, 15)
+        player.sprite = new Image
+        player.sprite.src ='assets/player.png'
         this.gameObjects.push(player)
     }
 }
@@ -253,7 +260,7 @@ class Engine {
             gameObject.y = 130 - gameObject.height
             gameObject.velY = 0
         }
-        
+
     
     }
 }
