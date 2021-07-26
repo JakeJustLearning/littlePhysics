@@ -32,7 +32,7 @@ class Game {
         
         this.gameObjects.filter(gameObj => gameObj.controlling == true)
             .forEach(gameObj => {
-                console.log(`applying ${this.controller.getInputs}`)
+                console.log(`applying ${this.controller.getInputs()}`)
                 gameObj.velX -= this.controller.getInputs()[0] 
                 gameObj.velY += this.controller.getInputs()[2] 
                 gameObj.velX += this.controller.getInputs()[1] 
@@ -79,7 +79,8 @@ class Controller {
         this.down = 0
         this.up = 0
         this.keyDown = this.keyDown.bind(this)
-        this.keyup = this.keyUp.bind(this)
+        this.keyUp = this.keyUp.bind(this)
+        // this.getInputs = this.getInputs.bind(this)
         // this.getInputs = this.getInput
     }
     keyDown(event) {
@@ -89,6 +90,7 @@ class Controller {
             case 37:
                 this.left = 1;
                 event.preventDefault()
+                console.log(` left is down here are the controls ${this.getInputs}`)
                 break
             case 39:
                 this.right = 1
@@ -117,8 +119,8 @@ class Controller {
             case 37:
                 this.left = 0
                 event.preventDefault()
-                console.log(this.left)
-
+                console.log(`left has been lifted ${this.left}`)
+                console.log(`here are the controls ${this.getInputs}`)
                 break
             case 39:
                 this.right = 0
@@ -138,6 +140,7 @@ class Controller {
             // }
     }
     getInputs() {
+        console.log(this.left, this.right, this.up, this.down)
         return [this.left, this.right, this.up, this.down]
     }
 }
@@ -195,18 +198,26 @@ class Engine {
     }
 
     yMovement(gameObject) {
-        console.log(gameObject)
+    
+        console.log(`yMovement on ${gameObject}`)
+        console.log(`Y: ${gameObject.y} = ${gameObject.y} + ${gameObject.velY}`)
         // console.log('ymovement')
-        gameObject.y = gameObject.y + gameObject.velY
+        gameObject.y += gameObject.velY
     }
 
     xMovement(gameObject) {
+        console.log(`xMovement on ${gameObject}`)
+        console.log(`X: ${gameObject.x} = ${gameObject.x} + ${gameObject.velX}`)
         gameObject.x += gameObject.velX
 
     }
     friction(gameObject) {
-        gameObject.velX *= 0.3
+        console.log(`friction on ${gameObject}`)
+        console.log(`before friction VelX = ${gameObject.velX} VelY = ${gameObject.velY} `)
+        gameObject.velX *= 0.1
+        gameObject.velY *= 0.1
         // gameObject.velY -= 1
+        console.log(`After apply friction VelX = ${gameObject.velX} VelY = ${gameObject.velY} `)
     }
 
     applyGravity(gameObject) {
