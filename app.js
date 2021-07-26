@@ -34,9 +34,9 @@ class Game {
             .forEach(gameObj => {
                 console.log(`applying ${this.controller.getInputs()}`)
                 gameObj.velX -= this.controller.getInputs()[0] 
-                gameObj.velY += this.controller.getInputs()[2] 
+                gameObj.velY -= this.controller.getInputs()[2] 
                 gameObj.velX += this.controller.getInputs()[1] 
-                gameObj.velY -= this.controller.getInputs()[3]
+                gameObj.velY += this.controller.getInputs()[3]
                 console.log(gameObj)
             })
     }
@@ -189,7 +189,7 @@ class Engine {
             this.yMovement(gameObj)
             this.xMovement(gameObj)
             this.friction(gameObj);
-            (gameObj.gravity) ? this.applyGravity(gameObj): console.log('nograv');
+            (gameObj.hasGravity) ? this.applyGravity(gameObj): console.log('nograv');
             if (gameObj.y + gameObj.height > 145) {
                 gameObj.y = 145 - gameObj.height
                 gameObj.VelY = 0
@@ -214,14 +214,14 @@ class Engine {
     friction(gameObject) {
         console.log(`friction on ${gameObject}`)
         console.log(`before friction VelX = ${gameObject.velX} VelY = ${gameObject.velY} `)
-        gameObject.velX *= 0.1
-        gameObject.velY *= 0.1
+        gameObject.velX *= 0.8
+        gameObject.velY *= 0.8
         // gameObject.velY -= 1
         console.log(`After apply friction VelX = ${gameObject.velX} VelY = ${gameObject.velY} `)
     }
 
     applyGravity(gameObject) {
-        gameObject.velY -= this.gravity
+        gameObject.velY += this.gravity
 
     }
 
